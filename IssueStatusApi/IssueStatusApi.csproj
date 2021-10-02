@@ -9,7 +9,14 @@
 		<PackageProjectUrl>https://github.com/expeehaa/IssueStatusApi</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/expeehaa/IssueStatusApi</RepositoryUrl>
 		<PackageTags>issue status;github</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
+	<ItemGroup>
+	  <None Include="..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath></PackagePath>
+	  </None>
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Octokit" Version="0.50.0" />

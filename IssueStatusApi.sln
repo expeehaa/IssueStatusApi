@@ -5,7 +5,12 @@ VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IssueStatusApi", "IssueStatusApi\IssueStatusApi.csproj", "{51BA7A16-69BE-4331-A054-957162278D66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IssueStatusApiTest", "IssueStatusApiTest\IssueStatusApiTest.csproj", "{CC13D192-392D-4885-9927-91553A1CD058}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IssueStatusApiTest", "IssueStatusApiTest\IssueStatusApiTest.csproj", "{CC13D192-392D-4885-9927-91553A1CD058}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{20FF30D0-643B-448B-8C21-4C96D44E3FB0}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
