@@ -3,7 +3,7 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>9.0</LangVersion>
 		<ErrorReport>none</ErrorReport>
-		<Version>0.1.0</Version>
+		<Version>0.2.0</Version>
 		<Authors>expeehaa</Authors>
 		<Description>Library to get issues as they are displayed and retrieved by Issue Status (https://github.com/tadhglewis/issue-status).</Description>
 		<PackageProjectUrl>https://github.com/expeehaa/IssueStatusApi</PackageProjectUrl>
