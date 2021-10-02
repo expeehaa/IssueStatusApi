@@ -11,18 +11,12 @@ namespace IssueStatusApi {
 		private const string LabelIncident = "incident";
 
 		private readonly GitHubClient _githubClient;
-		private readonly string _repositoryOwner;
-		private readonly string _repositoryName;
 
 		/// <summary>
-		/// Create a new instance of <code>IssueStatusApi.IssueStatus</code>.
+		/// Create a new instance of IssueStatusApi.IssueStatus.
 		/// </summary>
-		/// <param name="repositoryOwner">Owner of the repository.</param>
-		/// <param name="repositoryName">Name of the repository.</param>
 		/// <param name="githubApiToken">Token for authentication with the Github API. Requires token scope "public_repo" for accessing public repositories.</param>
-		public IssueStatus(string repositoryOwner, string repositoryName, string githubApiToken = null) {
-			_repositoryOwner = repositoryOwner;
-			_repositoryName = repositoryName;
+		public IssueStatus(string githubApiToken = null) {
 			_githubClient = new GitHubClient(new ProductHeaderValue("IssueStatusApi.Net"));
 
 			if(!string.IsNullOrWhiteSpace(githubApiToken)) {
@@ -31,18 +25,20 @@ namespace IssueStatusApi {
 		}
 
 		/// <summary>
-		/// Get a <code>Status</code> object containing all Issue Status issues from the Github repository this instance was initialized with.
+		/// Get a Status object containing all Issue Status issues from the Github repository this instance was initialized with.
 		/// 
 		/// Only one request is sent to the Github API.
 		/// </summary>
+		/// <param name="repositoryOwner">Owner of the repository.</param>
+		/// <param name="repositoryName">Name of the repository.</param>
 		/// <returns>An object containing all Issue Status issues.</returns>
-		public async Task<Status> GetStatus() {
+		public async Task<Status> GetStatus(string repositoryOwner, string repositoryName) {
 			var request = new RepositoryIssueRequest {
 				State = ItemStateFilter.All,
 			};
 			request.Labels.Add(LabelIssueStatus);
 
-			var issues = await _githubClient.Issue.GetAllForRepository(_repositoryOwner, _repositoryName, request);
+			var issues = await _githubClient.Issue.GetAllForRepository(repositoryOwner, repositoryName, request);
 			var components = issues.Where(i => i.Labels.Any(l => l.Name.Equals(LabelIssueStatus, StringComparison.OrdinalIgnoreCase)) && i.Labels.Any(l => l.Name.Equals(LabelComponent, StringComparison.OrdinalIgnoreCase))).Select(issue => new Component(issue.Number, issue.Title, issue.Body, GetComponentStatusFromLabel(issue.Labels))).ToArray();
 			var incidents = issues.Where(i => i.Labels.Any(l => l.Name.Equals(LabelIssueStatus, StringComparison.OrdinalIgnoreCase)) && i.Labels.Any(l => l.Name.Equals(LabelIncident, StringComparison.OrdinalIgnoreCase))).Select(issue => new Incident(issue.Number, issue.Title, issue.Body, issue.CreatedAt, issue.ClosedAt)).ToArray();
 
@@ -61,7 +57,7 @@ namespace IssueStatusApi {
 		/// An array of the changed Issue Status issues.
 		/// 
 		/// Each array element contains both the old and the new issue for direct comparison.
-		/// If the issue was added/deleted, one may be <code>null</code>.
+		/// If the issue was added/deleted, one may be null.
 		/// </returns>
 		public static (IIssue Old, IIssue New)[] CompareStatus(Status oldStatus, Status newStatus) {
 			return oldStatus.AllIssues.Concat(newStatus.AllIssues).Select(i => i.Id).Distinct().Select(id => (oldStatus.AllIssues.FirstOrDefault(issue => id == issue.Id), newStatus.AllIssues.FirstOrDefault(issue => id == issue.Id))).Where((s) => s.Item1 != s.Item2).ToArray();
